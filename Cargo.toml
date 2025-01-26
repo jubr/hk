@@ -1,0 +1,14 @@
+[package]
+name = "angler"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4.39"
+clap = { version = "4.5.27", features = ["derive"] }
+console = "0.15.10"
+dirs = "6.0.0"
+log = "0.4.25"
+miette = { version = "7.4.0", features = ["fancy", "syntect-highlighter"] }
+tokio = { version = "1.43.0", features = ["full"] }
+xx = "2.0.3"
