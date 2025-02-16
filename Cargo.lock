@@ -1976,6 +1976,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8900b7d49f6fe888776f30a3cdbac9ab185cbc489ba62fdf03e881d9195b31ab"
 dependencies = [
  "dunce",
+ "indexmap 2.7.1",
  "rmp-serde",
  "rmpv",
  "serde",
