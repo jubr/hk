@@ -141,7 +141,7 @@ impl Git {
         if self.stash_diff.is_none() {
             return Ok(());
         }
-
+        debug!("removing unstaged files");
         let mut checkout_opts = git2::build::CheckoutBuilder::new();
         self.repo
             .checkout_head(Some(&mut checkout_opts))
@@ -152,6 +152,7 @@ impl Git {
     }
 
     fn build_diff(&self) -> Result<Option<Vec<u8>>> {
+        debug!("building diff for stash");
         // essentially: git diff-index --ignore-submodules --binary --exit-code --no-color --no-ext-diff (git write-tree)
         let tree = self.head_tree()?;
         let diff = self
