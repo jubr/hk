@@ -8,16 +8,17 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Environment Variables', link: '/environment_variables' },
     ],
 
     sidebar: [
       {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
+        text: 'Getting Started',
+        link: '/getting_started',
+      },
+      {
+        text: 'Environment Variables',
+        link: '/environment_variables',
       }
     ],
 
