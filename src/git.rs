@@ -183,10 +183,8 @@ impl Git {
         if diff_bytes.is_empty() {
             Ok(None)
         } else {
-            println!("{}", String::from_utf8_lossy(&diff_bytes));
             Ok(Some(String::from_utf8_lossy(&diff_bytes).to_string()))
         }
-        // xx
     }
 
     pub fn pop_stash(&mut self) -> Result<()> {
@@ -196,13 +194,6 @@ impl Git {
 
         let diff = git2::Diff::from_buffer(diff.as_bytes()).into_diagnostic()?;
         let mut apply_opts = git2::ApplyOptions::new();
-        apply_opts.delta_callback(|delta| {
-            if let Some(delta) = delta {
-                println!("{}", delta.new_file().path().unwrap().to_str().unwrap());
-                println!("{}", delta.old_file().path().unwrap().to_str().unwrap());
-            }
-            true
-        });
         self.repo
             .apply(&diff, git2::ApplyLocation::WorkDir, Some(&mut apply_opts))
             .into_diagnostic()
