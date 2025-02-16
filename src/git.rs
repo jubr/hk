@@ -160,6 +160,10 @@ impl Git {
     fn build_diff(&self) -> Result<Option<String>> {
         debug!("building diff for stash");
         // essentially: git diff-index --ignore-submodules --binary --exit-code --no-color --no-ext-diff (git write-tree)
+        let mut idx = self.repo.index().into_diagnostic()?;
+        idx.write()
+            .into_diagnostic()
+            .wrap_err("failed to write index")?;
         let mut opts = git2::DiffOptions::new();
         opts.include_untracked(true);
         opts.show_binary(true);

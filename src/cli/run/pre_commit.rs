@@ -22,7 +22,9 @@ impl PreCommit {
     pub async fn run(&self) -> Result<()> {
         let config = Config::read(Path::new("hk.pkl"))?;
         let mut repo = Git::new()?;
-        repo.stash_unstaged(self.stash)?;
+        if !self.all {
+            repo.stash_unstaged(self.stash)?;
+        }
         let mut result = config.run_hook("pre_commit", self.all, &repo).await;
 
         if let Err(err) = repo.pop_stash() {
