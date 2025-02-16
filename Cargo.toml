@@ -7,7 +7,7 @@ license = "MIT"
 repository = "https://github.com/jdx/hk"
 documentation = "https://hk.jdx.dev"
 homepage = "https://hk.jdx.dev"
-include = ["src/**/*.rs", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE", "pkl"]
+include = ["/src/**/*.rs", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE", "/pkl"]
 
 [dependencies]
 chrono = "0.4"
