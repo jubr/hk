@@ -1,5 +1,7 @@
 {
   "files.exclude": {
+    "test/test_helper": true,
+    "test/bats": true,
     "node_modules": true,
     "target": true
   }

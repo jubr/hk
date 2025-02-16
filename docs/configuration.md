@@ -49,7 +49,7 @@ Hooks are made up of steps. The hook themselves can be one of the following:
 
 ### `<HOOK>.<STEP>`
 
-Steps are the individual hooks that make up a hook. They are executed in the order they are defined in parallel up to [`HK_JOBS`](/environment_variables#hk-jobs) at a time.
+Steps are the individual commands that make up a hook. They are executed in the order they are defined in parallel up to [`HK_JOBS`](/environment_variables#hk-jobs) at a time.
 
 
 ### `<HOOK>.<STEP>.glob: Listing<String>`
