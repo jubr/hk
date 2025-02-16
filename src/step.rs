@@ -109,26 +109,33 @@ impl Step {
             .execute()
             .await
             .into_diagnostic()?;
-        if let Some(stage) = &self.stage {
+        let pathspecs_to_add = if let Some(stage) = &self.stage {
             let stage = stage
                 .iter()
                 .map(|s| tera::render(s, &tctx).unwrap())
                 .collect_vec();
-            pr.set_message(format!("staging {}", stage.join(" ")));
+            glob::get_matches(&stage, &staged_files)?
+        } else {
+            staged_files
+        }
+        .iter()
+        .map(|f| f.to_string_lossy().to_string())
+        .collect_vec();
+        if !pathspecs_to_add.is_empty() {
+            pr.set_message(format!("staging {}", pathspecs_to_add.join(" ")));
             let mut repo = Git::new()?;
-            let matches = glob::get_matches(&stage, &staged_files)?;
-            let staged_files = matches.iter().map(|f| f.to_str().unwrap()).collect_vec();
-            if !staged_files.is_empty() {
-                repo.add(&staged_files)?;
+            if !pathspecs_to_add.is_empty() {
+                repo.add(&pathspecs_to_add.iter().map(|f| f.as_str()).collect_vec())?;
             }
         }
-        if run_type == RunType::RunAll || run_type == RunType::FixAll || staged_files.is_empty() {
+        if run_type == RunType::RunAll || run_type == RunType::FixAll || pathspecs_to_add.is_empty()
+        {
             pr.finish_with_message("done".to_string());
         } else {
             pr.finish_with_message(format!(
                 "{} file{}",
-                staged_files.len(),
-                if staged_files.len() == 1 { "" } else { "s" }
+                pathspecs_to_add.len(),
+                if pathspecs_to_add.len() == 1 { "" } else { "s" }
             ));
         }
         Ok(())

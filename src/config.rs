@@ -83,10 +83,7 @@ impl Config {
         }
         .clone()
         .unwrap_or_default();
-        let all_files = match run_type {
-            Some(RunType::RunAll) | Some(RunType::FixAll) => true,
-            _ => false,
-        };
+        let all_files = matches!(run_type, Some(RunType::RunAll) | Some(RunType::FixAll));
         let mut runner = StepScheduler::new(&hook).with_all_files(all_files);
         if all_files {
             let all_files = repo.all_files()?;
