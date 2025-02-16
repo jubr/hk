@@ -39,3 +39,8 @@ semver = "1.0.25"
 [profile.serious]
 inherits = "release"
 lto = true
+
+[package.metadata.release]
+pre-release-replacements = [
+    {file="pkl/PklProject", search='version = ".*"', replace='version = "{{version}}"'}
+]
