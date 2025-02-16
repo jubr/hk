@@ -2,7 +2,12 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
-use crate::{git::Git, step::Step, step_scheduler::StepScheduler, version, Result};
+use crate::{
+    git::Git,
+    step::{RunType, Step},
+    step_scheduler::StepScheduler,
+    version, Result,
+};
 use miette::{bail, IntoDiagnostic};
 
 impl Config {
@@ -70,7 +75,7 @@ impl std::fmt::Display for Config {
 }
 
 impl Config {
-    pub async fn run_hook(&self, hook: &str, all_files: bool, repo: &Git) -> Result<()> {
+    pub async fn run_hook(&self, hook: &str, run_type: Option<RunType>, repo: &Git) -> Result<()> {
         let hook = match hook {
             "pre_commit" => &self.pre_commit,
             "pre_push" => &self.pre_push,
@@ -78,6 +83,10 @@ impl Config {
         }
         .clone()
         .unwrap_or_default();
+        let all_files = match run_type {
+            Some(RunType::RunAll) | Some(RunType::FixAll) => true,
+            _ => false,
+        };
         let mut runner = StepScheduler::new(&hook).with_all_files(all_files);
         if all_files {
             let all_files = repo.all_files()?;

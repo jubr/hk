@@ -1,4 +1,4 @@
-use crate::config::Config;
+use crate::{config::Config, env, step::RunType};
 use crate::{git::Git, Result};
 use std::path::Path;
 
@@ -9,23 +9,37 @@ pub struct PreCommit {
     /// Run on all files instead of just staged files
     #[clap(short, long)]
     all: bool,
+    /// Run fix command instead of run command
+    /// This is the default behavior unless HK_FIX=0
+    #[clap(short, long)]
+    fix: bool,
+    /// Run run command instead of fix command
+    #[clap(short, long)]
+    run: bool,
     /// Force stashing even if it's disabled via HK_AUTO_STASH
     #[clap(long)]
     stash: bool,
 }
 
-// flow:
-// 1. lint+fix+format in parallel, export diffs
-// 2. run formatters again after diffs are applied if any fixers
-
 impl PreCommit {
     pub async fn run(&self) -> Result<()> {
         let config = Config::read(Path::new("hk.pkl"))?;
         let mut repo = Git::new()?;
+        let run_type = if self.all {
+            if self.fix || *env::HK_FIX {
+                Some(RunType::FixAll)
+            } else {
+                Some(RunType::RunAll)
+            }
+        } else if self.fix || *env::HK_FIX {
+            Some(RunType::Fix)
+        } else {
+            Some(RunType::Run)
+        };
         if !self.all {
             repo.stash_unstaged(self.stash)?;
         }
-        let mut result = config.run_hook("pre_commit", self.all, &repo).await;
+        let mut result = config.run_hook("pre_commit", run_type, &repo).await;
 
         if let Err(err) = repo.pop_stash() {
             if result.is_ok() {
