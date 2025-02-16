@@ -9,6 +9,12 @@ pub struct PrePush {
     /// Run on all files instead of just staged files
     #[clap(short, long)]
     all: bool,
+    /// Remote name
+    #[clap(short, long)]
+    remote: String,
+    /// Remote URL
+    #[clap(short, long)]
+    url: String,
 }
 
 impl PrePush {
