@@ -5,8 +5,15 @@ _.path = [
 ]
 
 [tools]
+black = "latest"
+hadolint = "latest"
+ktlint = "latest"
+markdownlint-cli2 = "latest"
 "npm:prettier" = "latest"
+"npm:stylelint" = "latest"
 pkl = "latest"
+shellcheck = "latest"
+swiftlint = "latest"
 yq = "latest"
 
 [tasks.init]

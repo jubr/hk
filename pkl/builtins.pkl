@@ -64,3 +64,54 @@ class Yq extends hk.Step {
     run = "yq {{ files }}"
     fix = "yq -iP {{ files }}"
 }
+
+class Black extends hk.Step {
+    glob = new { "**/*.py" }
+    run = "black --check {{ files }}"
+    fix = "black {{ files }}"
+    run_all = "black --check ."
+    fix_all = "black ."
+}
+
+class Shellcheck extends hk.Step {
+    glob = new { "**/*.{sh,bash}" }
+    run = "shellcheck {{ files }}"
+    run_all = "shellcheck ."
+}
+
+class Hadolint extends hk.Step {
+    glob = new { "**/Dockerfile*" }
+    run = "hadolint {{ files }}"
+}
+
+class Markdownlint extends hk.Step {
+    glob = new { "**/*.{md,markdown}" }
+    run = "markdownlint {{ files }}"
+    fix = "markdownlint --fix {{ files }}"
+    run_all = "markdownlint ."
+    fix_all = "markdownlint --fix ."
+}
+
+class Stylelint extends hk.Step {
+    glob = new { "**/*.{css,scss,sass,less}" }
+    run = "stylelint {{ files }}"
+    fix = "stylelint --fix {{ files }}"
+    run_all = "stylelint \"**/*.{css,scss,sass,less}\""
+    fix_all = "stylelint --fix \"**/*.{css,scss,sass,less}\""
+}
+
+class SwiftLint extends hk.Step {
+    glob = new { "**/*.swift" }
+    run = "swiftlint lint {{ files }}"
+    fix = "swiftlint --fix {{ files }}"
+    run_all = "swiftlint"
+    fix_all = "swiftlint --fix"
+}
+
+class Ktlint extends hk.Step {
+    glob = new { "**/*.kt" }
+    run = "ktlint {{ files }}"
+    fix = "ktlint -F {{ files }}"
+    run_all = "ktlint"
+    fix_all = "ktlint -F"
+}

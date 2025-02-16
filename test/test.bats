@@ -165,3 +165,22 @@ EOF
     hk run pre-commit
     assert_file_contains test.yaml 'test: 123'
 }
+
+@test "builtin: shellcheck" {
+    cat <<EOF > hk.pkl
+amends "$PKL_PATH/hk.pkl"
+import "$PKL_PATH/builtins.pkl"
+
+\`pre-commit\` {
+    ["shellcheck"] = new builtins.Shellcheck {}
+}
+EOF
+    cat <<EOF > test.sh
+#!/bin/bash
+cat \$1
+EOF
+    git add test.sh
+    run hk run pre-commit
+    assert_failure
+    assert_output --partial "SC2086"
+}
