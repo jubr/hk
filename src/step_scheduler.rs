@@ -59,7 +59,7 @@ impl StepScheduler {
         };
         let failed = self.failed.clone();
         if *failed.lock().await {
-            trace!("skipping step due to previous failure: {:?}", step.name);
+            trace!("{}: skipping step due to previous failure", step);
             return Ok(());
         }
         debug!("spawning step: {:?}", step.name);

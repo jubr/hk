@@ -3,6 +3,7 @@ use crate::Result;
 use crate::{git::Git, glob};
 use ensembler::CmdLineRunner;
 use itertools::Itertools;
+use miette::miette;
 use miette::IntoDiagnostic;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;

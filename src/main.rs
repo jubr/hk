@@ -23,15 +23,7 @@ use tokio::signal::unix::SignalKind;
 async fn main() -> Result<()> {
     #[cfg(unix)]
     handle_epipe();
-    if let Err(e) = cli::run().await {
-        if log::log_enabled!(log::Level::Debug) {
-            return Err(e);
-        } else {
-            error!("{e}");
-        }
-        std::process::exit(1);
-    }
-    Ok(())
+    cli::run().await
 }
 
 #[cfg(unix)]
