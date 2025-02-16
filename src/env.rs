@@ -27,7 +27,7 @@ pub static HK_LOG_FILE_LEVEL: LazyLock<log::LevelFilter> =
 pub static HK_LOG_FILE: LazyLock<PathBuf> =
     LazyLock::new(|| var_path("HK_LOG_FILE").unwrap_or(HK_STATE_DIR.join("hk.log")));
 
-pub static HK_AUTO_STASH: LazyLock<bool> = LazyLock::new(|| var_true("HK_AUTO_STASH"));
+pub static HK_AUTO_STASH: LazyLock<bool> = LazyLock::new(|| !var_false("HK_AUTO_STASH"));
 
 fn var_path(name: &str) -> Option<PathBuf> {
     var(name).map(PathBuf::from).ok()
@@ -37,16 +37,16 @@ fn var_log_level(name: &str) -> Option<log::LevelFilter> {
     var(name).ok().and_then(|level| level.parse().ok())
 }
 
-fn var_true(name: &str) -> bool {
-    var(name)
-        .map(|val| val.to_lowercase())
-        .map(|val| val == "true" || val == "1")
-        .unwrap_or(false)
-}
-
-// fn var_false(name: &str) -> bool {
+// fn var_true(name: &str) -> bool {
 //     var(name)
 //         .map(|val| val.to_lowercase())
-//         .map(|val| val == "false" || val == "0")
+//         .map(|val| val == "true" || val == "1")
 //         .unwrap_or(false)
 // }
+
+fn var_false(name: &str) -> bool {
+    var(name)
+        .map(|val| val.to_lowercase())
+        .map(|val| val == "false" || val == "0")
+        .unwrap_or(false)
+}

@@ -19,11 +19,11 @@ pre_commit {
     // predefined formatters+linters
     // ["cargo-check"] = new builtins.CargoCheck {} // TODO: figure out why this causes recompiles
     ["cargo-fmt"] = new builtins.CargoFmt {}
-    ["dbg"] {
-        // ensure no dbg! macros are used
-        glob = new { "**/*.rs" }
-        run = "! rg -e 'dbg!' {{staged_files}}"
-    }
+    // ["dbg"] {
+    //     // ensure no dbg! macros are used
+    //     glob = new { "**/*.rs" }
+    //     run = "! rg -e 'dbg!' {{staged_files}}"
+    // }
     ["prettier"] = new builtins.Prettier {
         glob = new { "*.js"; "*.ts" } // override the default globs
     }

@@ -1,4 +1,4 @@
-use crate::{config::Config, env};
+use crate::config::Config;
 use crate::{git::Git, Result};
 use std::path::Path;
 
@@ -9,6 +9,9 @@ pub struct PreCommit {
     /// Run on all files instead of just staged files
     #[clap(short, long)]
     all: bool,
+    /// Force stashing even if it's disabled via HK_AUTO_STASH
+    #[clap(long)]
+    stash: bool,
 }
 
 // flow:
@@ -19,9 +22,7 @@ impl PreCommit {
     pub async fn run(&self) -> Result<()> {
         let config = Config::read(Path::new("hk.pkl"))?;
         let mut repo = Git::new()?;
-        if *env::HK_AUTO_STASH {
-            repo.stash_unstaged()?;
-        }
+        repo.stash_unstaged(self.stash)?;
         let mut result = config.run_hook("pre_commit", self.all, &repo).await;
 
         if let Err(err) = repo.pop_stash() {

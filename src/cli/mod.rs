@@ -24,7 +24,7 @@ struct Cli {
     #[clap(short, long, global = true, overrides_with_all = ["verbose", "silent"])]
     quiet: bool,
     /// Suppresses all output
-    #[clap(short, long, global = true, overrides_with_all = ["quiet", "verbose"])]
+    #[clap(long, global = true, overrides_with_all = ["quiet", "verbose"])]
     silent: bool,
     #[clap(subcommand)]
     command: Commands,
