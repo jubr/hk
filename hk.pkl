@@ -14,7 +14,7 @@ pre_commit {
     }
     ["pkl"] {
         glob = new { "*.pkl" }
-        run = "pkl eval {{staged_files}} >/dev/null"
+        run = "pkl eval {{files}} >/dev/null"
     }
     // predefined formatters+linters
     // ["cargo-check"] = new builtins.CargoCheck {} // TODO: figure out why this causes recompiles
@@ -22,7 +22,7 @@ pre_commit {
     ["dbg"] {
         // ensure no dbg! macros are used
         glob = new { "**/*.rs" }
-        run = "! rg -e 'dbg!' {{staged_files}}"
+        run = "! rg -e 'dbg!' {{files}}"
     }
     ["prettier"] = new builtins.Prettier {
         glob = new { "*.js"; "*.ts" } // override the default globs

@@ -10,7 +10,7 @@ use crate::{step::StepContext, Result};
 #[derive(Debug)]
 pub struct StepScheduler {
     steps: Vec<Step>,
-    staged_files: Vec<PathBuf>,
+    files: Vec<PathBuf>,
     failed: Arc<Mutex<bool>>,
     semaphore: Arc<Semaphore>,
     all_files: bool,
@@ -22,7 +22,7 @@ impl StepScheduler {
         let settings = Settings::get();
         Self {
             steps: hook.values().cloned().collect(),
-            staged_files: vec![],
+            files: vec![],
             failed: Arc::new(Mutex::new(false)),
             semaphore: Arc::new(Semaphore::new(settings.jobs().get())),
             jobs: settings.jobs().get() as u32,
@@ -35,8 +35,8 @@ impl StepScheduler {
         self
     }
 
-    pub fn with_staged_files(mut self, staged_files: Vec<PathBuf>) -> Self {
-        self.staged_files = staged_files;
+    pub fn with_files(mut self, files: Vec<PathBuf>) -> Self {
+        self.files = files;
         self
     }
 
@@ -83,7 +83,7 @@ impl StepScheduler {
         let mut set = JoinSet::new();
         let ctx = Arc::new(StepContext {
             all_files: runner.all_files,
-            staged_files: runner.staged_files.clone(),
+            files: runner.files.clone(),
         });
 
         // Spawn all tasks

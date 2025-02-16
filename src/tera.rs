@@ -38,8 +38,8 @@ impl Context {
         self
     }
 
-    pub fn with_staged_files<P: AsRef<Path>>(&mut self, files: &[P]) -> &mut Self {
-        let staged_files = files
+    pub fn with_files<P: AsRef<Path>>(&mut self, files: &[P]) -> &mut Self {
+        let files = files
             .iter()
             .map(|m| {
                 let s = m.as_ref().to_str().unwrap();
@@ -50,7 +50,7 @@ impl Context {
                 }
             })
             .join(" ");
-        self.insert("staged_files", &staged_files);
+        self.insert("files", &files);
         self
     }
 }

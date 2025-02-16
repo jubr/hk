@@ -58,17 +58,17 @@ impl Step {
     pub async fn run(&self, ctx: &StepContext) -> Result<()> {
         let mut tctx = tera::Context::default();
         let staged_files = if let Some(glob) = &self.glob {
-            let matches = glob::get_matches(glob, &ctx.staged_files)?;
+            let matches = glob::get_matches(glob, &ctx.files)?;
             if matches.is_empty() {
                 debug!("no matches for step: {:?}", self.name);
                 return Ok(());
             }
             matches
         } else {
-            ctx.staged_files.clone()
+            ctx.files.clone()
         };
         tctx.with_globs(self.glob.as_ref().unwrap_or(&vec![]));
-        tctx.with_staged_files(staged_files.as_ref());
+        tctx.with_files(staged_files.as_ref());
         let pr = self.build_pr();
         let mut run_all = false;
         let run = match (&self.run_all, ctx.all_files) {
@@ -119,5 +119,5 @@ impl Step {
 
 pub struct StepContext {
     pub all_files: bool,
-    pub staged_files: Vec<PathBuf>,
+    pub files: Vec<PathBuf>,
 }

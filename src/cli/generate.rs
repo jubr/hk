@@ -31,7 +31,7 @@ min_hk_version = "{version}"
 //     // everything from here to postlint is run in parallel
 //     ["pkl"] {{
 //         glob = new {{ "*.pkl" }}
-//         run = "pkl eval {{staged_files}} >/dev/null"
+//         run = "pkl eval {{files}} >/dev/null"
 //     }}
 //     // predefined formatters+linters
 //     ["cargo-check"] = new builtins.CargoCheck {{}}

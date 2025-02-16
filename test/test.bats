@@ -36,7 +36,7 @@ teardown() {
 }
 
 @test "hk generate creates hk.pkl" {
-    hk init
+    hk g
     assert_file_contains hk.pkl "min_hk_version"
 }
 

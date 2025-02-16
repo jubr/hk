@@ -9,7 +9,7 @@ open class Step {
     run: String
 
     /// a shell command to run on all files
-    /// if run_all is not set, this will just use the run command and pass all files in the repo as {{staged_files}}
+    /// if run_all is not set, this will just use the run command and pass all files in the repo as {{files}}
     run_all: String?
 
     /// globs of files to add to git index after running the step

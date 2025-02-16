@@ -81,10 +81,10 @@ impl Config {
         let mut runner = StepScheduler::new(&hook).with_all_files(all_files);
         if all_files {
             let all_files = repo.all_files()?;
-            runner = runner.with_all_files(true).with_staged_files(all_files);
+            runner = runner.with_all_files(true).with_files(all_files);
         } else {
             let staged_files = repo.staged_files()?;
-            runner = runner.with_staged_files(staged_files);
+            runner = runner.with_files(staged_files);
         }
         runner.run().await?;
         info!("pre-commit done");

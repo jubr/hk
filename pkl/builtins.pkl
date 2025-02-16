@@ -24,61 +24,61 @@ class CargoFmt extends hk.Step {
 
 class Eslint extends hk.Step {
     glob = new { "**/*.{js,jsx,ts,tsx}" }
-    run = "eslint {{ staged_files }}"
+    run = "eslint {{ files }}"
     run_all = "eslint ."
 }
 
 class EslintFix extends hk.Step {
     glob = new { "**/*.{js,jsx,ts,tsx}" }
-    run = "eslint --fix {{ staged_files }}"
+    run = "eslint --fix {{ files }}"
     run_all = "eslint --fix ."
     stage = new { "{{ globs }}" }
 }
 
 class GoVet extends hk.Step {
     glob = new { "**/*.go" }
-    run = "go vet {{ staged_files }}"
+    run = "go vet {{ files }}"
     run_all = "go vet ."
 }
 
 class Jq extends hk.Step {
     glob = new { "**/*.json" }
-    run = "jq . {{ staged_files }}"
+    run = "jq . {{ files }}"
 }
 
 class JqFormat extends hk.Step {
     glob = new { "**/*.json" }
-    run = "jq . {{ staged_files }}"
+    run = "jq . {{ files }}"
     stage = new { "{{ globs }}" }
 }
 
 class Prettier extends hk.Step {
     glob = new { "**/*.{js,jsx,ts,tsx,css,scss,less,html,json,jsonc,yaml,markdown,markdown.mdx,graphql,handlebars,svelte,astro,htmlangular}" }
-    run = "prettier --write {{ staged_files }}"
+    run = "prettier --write {{ files }}"
     run_all = "prettier --write ."
     stage = new { "{{ globs }}" }
 }
 
 class Rubocop extends hk.Step {
     glob = new { "**/*.rb" }
-    run = "rubocop --fix {{ staged_files }}"
+    run = "rubocop --fix {{ files }}"
     run_all = "rubocop --fix ."
     stage = new { "{{ globs }}" }
 }
 
 class Rustfmt extends hk.Step {
     glob = new { "**/*.rs" }
-    run = "rustfmt --edition 2024 {{ staged_files }}"
+    run = "rustfmt --edition 2024 {{ files }}"
     stage = new { "{{ globs }}" }
 }
 
 class Yq extends hk.Step {
     glob = new { "**/*.yaml" }
-    run = "yq {{ staged_files }}"
+    run = "yq {{ files }}"
 }
 
 class YqFormat extends hk.Step {
     glob = new { "**/*.yaml" }
-    run = "yq -iP {{ staged_files }}"
+    run = "yq -iP {{ files }}"
     stage = new { "{{ globs }}" }
 }
