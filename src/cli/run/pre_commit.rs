@@ -4,7 +4,7 @@ use std::path::Path;
 
 /// Sets up git hooks to run hk
 #[derive(Debug, clap::Args)]
-#[clap(visible_alias = "pc")]
+#[clap(visible_alias = "co")]
 pub struct PreCommit {
     /// Run on all files instead of just staged files
     #[clap(short, long)]

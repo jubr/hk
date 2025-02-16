@@ -5,7 +5,7 @@ use std::path::Path;
 
 /// Sets up git hooks to run hk
 #[derive(Debug, clap::Args)]
-#[clap(visible_alias = "pp")]
+#[clap(visible_alias = "ph")]
 pub struct PrePush {
     /// Run on all files instead of just staged files
     #[clap(short, long)]
