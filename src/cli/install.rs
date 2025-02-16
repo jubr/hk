@@ -4,7 +4,7 @@ use crate::{config::Config, Result};
 
 /// Sets up git hooks to run hk
 #[derive(Debug, clap::Args)]
-#[clap()]
+#[clap(visible_alias = "i")]
 pub struct Install {}
 
 impl Install {

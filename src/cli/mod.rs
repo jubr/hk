@@ -6,7 +6,7 @@ use clap::Parser;
 
 mod cache;
 mod config;
-mod init;
+mod generate;
 mod install;
 mod run;
 mod version;
@@ -34,7 +34,7 @@ struct Cli {
 enum Commands {
     Cache(cache::Cache),
     Config(config::Config),
-    Init(init::Init),
+    Generate(generate::Generate),
     Install(install::Install),
     Run(run::Run),
     Version(version::Version),
@@ -67,7 +67,7 @@ pub async fn run() -> Result<()> {
     match args.command {
         Commands::Cache(cmd) => cmd.run().await,
         Commands::Config(cmd) => cmd.run().await,
-        Commands::Init(cmd) => cmd.run().await,
+        Commands::Generate(cmd) => cmd.run().await,
         Commands::Install(cmd) => cmd.run().await,
         Commands::Run(cmd) => cmd.run().await,
         Commands::Version(cmd) => cmd.run().await,

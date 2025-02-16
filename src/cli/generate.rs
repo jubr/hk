@@ -2,12 +2,12 @@ use std::path::PathBuf;
 
 use crate::{version, Result};
 
-/// Sets up git hooks to run hk
+/// Generates a new hk.pkl file for a project
 #[derive(Debug, clap::Args)]
-#[clap()]
-pub struct Init {}
+#[clap(visible_alias = "g")]
+pub struct Generate {}
 
-impl Init {
+impl Generate {
     pub async fn run(&self) -> Result<()> {
         let hk_file = PathBuf::from("hk.pkl");
         let version = version::version();
