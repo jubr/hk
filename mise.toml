@@ -36,5 +36,7 @@ run = "pkl project package pkl --output-path docs/public/pkl"
 run = "echo prelint"
 [tasks.postlint]
 run = "echo postlint"
+[tasks.pre-release]
+depends = ["package-pkl"]
 [tasks.lint-fix]
 run = "cargo clippy --fix --allow-dirty --allow-staged --all-targets --all-features"

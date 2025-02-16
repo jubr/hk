@@ -28,7 +28,7 @@ This will generate a `hk.pkl` file in the root of the repository, here's an exam
 
 ```pkl
 amends "package://hk.jdx.dev/hk@0.1.0#/hk.pkl"
-amends "package://hk.jdx.dev/hk@0.1.0#/builtins.pkl"
+import "package://hk.jdx.dev/hk@0.1.0#/builtins.pkl"
 
 pre_commit {
     // hooks can be manually defined

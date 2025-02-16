@@ -41,6 +41,8 @@ inherits = "release"
 lto = true
 
 [package.metadata.release]
+pre-release-hook = "mise run pre-release"
 pre-release-replacements = [
-    {file="pkl/PklProject", search='version = ".*"', replace='version = "{{version}}"'}
+    {file="pkl/PklProject", search='version = ".*"', replace='version = "{{version}}"'},
+    {file="README.md", search='hk.jdx.dev/hk@.*#/', replace='hk.jdx.dev/hk@{{version}}#/'},
 ]
