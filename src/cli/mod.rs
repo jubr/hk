@@ -5,10 +5,12 @@ use crate::{logger, settings::Settings, Result};
 use clap::Parser;
 
 mod cache;
+mod completion;
 mod config;
 mod generate;
 mod install;
 mod run;
+mod usage;
 mod version;
 
 #[derive(Debug, clap::Parser)]
@@ -33,10 +35,12 @@ struct Cli {
 #[derive(Debug, clap::Subcommand)]
 enum Commands {
     Cache(cache::Cache),
+    Completion(completion::Completion),
     Config(config::Config),
     Generate(generate::Generate),
     Install(install::Install),
     Run(run::Run),
+    Usage(usage::Usage),
     Version(version::Version),
 }
 
@@ -66,10 +70,12 @@ pub async fn run() -> Result<()> {
     }
     match args.command {
         Commands::Cache(cmd) => cmd.run().await,
+        Commands::Completion(cmd) => cmd.run().await,
         Commands::Config(cmd) => cmd.run().await,
         Commands::Generate(cmd) => cmd.run().await,
         Commands::Install(cmd) => cmd.run().await,
         Commands::Run(cmd) => cmd.run().await,
+        Commands::Usage(cmd) => cmd.run().await,
         Commands::Version(cmd) => cmd.run().await,
     }
 }

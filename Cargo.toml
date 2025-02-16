@@ -7,7 +7,7 @@ license = "MIT"
 repository = "https://github.com/jdx/hk"
 documentation = "https://hk.jdx.dev"
 homepage = "https://hk.jdx.dev"
-include = ["/src/**/*.rs", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE", "/pkl"]
+include = ["/src/**/*", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE", "/pkl"]
 
 [dependencies]
 chrono = "0.4"
@@ -35,6 +35,7 @@ xx = { version = "2", features = ["http", "hash", "rustls"] }
 strum = { version = "0.26", features = ["derive"] }
 clx = "0.1.0"
 semver = "1.0.25"
+clap_usage = "2.0.3"
 
 [profile.serious]
 inherits = "release"
