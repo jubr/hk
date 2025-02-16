@@ -145,7 +145,7 @@ EOF
     git add test.yaml
     run hk run pre-commit
     assert_failure
-    assert_output --partial "yaml: mapping values are not allowed in this context"
+    assert_output --partial "yaml: mapping values are not allowed"
 }
 
 @test "builtin: yaml format" {
