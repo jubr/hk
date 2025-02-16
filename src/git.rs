@@ -1,4 +1,4 @@
-use std::{path::PathBuf, thread, time::Duration};
+use std::{cell::RefCell, path::PathBuf, thread, time::Duration};
 
 use git2::{Commit, Repository, StashFlags, StatusOptions, StatusShow, Tree};
 use itertools::Itertools;
@@ -9,7 +9,7 @@ use crate::env;
 
 pub struct Git {
     repo: Repository,
-    stash_diff: Option<Vec<u8>>,
+    stash_diff: Option<String>,
     root: PathBuf,
 }
 
@@ -144,29 +144,32 @@ impl Git {
 
         debug!("removing unstaged files");
 
+        let mut checkout_opts = git2::build::CheckoutBuilder::new();
+        checkout_opts.allow_conflicts(true);
+        checkout_opts.remove_untracked(true);
+        checkout_opts.force();
+        checkout_opts.update_index(false);
         self.repo
-            .checkout_index(None, None)
+            .checkout_index(None, Some(&mut checkout_opts))
             .into_diagnostic()
             .wrap_err("failed to reset to head")?;
-        std::process::exit(0);
 
         Ok(())
     }
 
-    fn build_diff(&self) -> Result<Option<Vec<u8>>> {
+    fn build_diff(&self) -> Result<Option<String>> {
         debug!("building diff for stash");
         // essentially: git diff-index --ignore-submodules --binary --exit-code --no-color --no-ext-diff (git write-tree)
-        let tree = self.head_tree()?;
+        let mut opts = git2::DiffOptions::new();
+        opts.include_untracked(true);
         let diff = self
             .repo
-            .diff_tree_to_index(Some(&tree), None, None)
+            .diff_tree_to_workdir_with_index(Some(&self.head_tree()?), Some(&mut opts))
             .into_diagnostic()
             .wrap_err("failed to get diff")?;
         let mut diff_bytes = vec![];
-        diff.print(git2::DiffFormat::Patch, |delta, _hunk, line| {
-            if delta.new_file().path().unwrap().exists() {
-                diff_bytes.extend(line.content());
-            }
+        diff.print(git2::DiffFormat::Patch, |_delta, _hunk, line| {
+            diff_bytes.extend(line.content());
             true
         })
         .into_diagnostic()
@@ -174,8 +177,24 @@ impl Git {
         if diff_bytes.is_empty() {
             Ok(None)
         } else {
-            Ok(Some(diff_bytes))
+            println!("{}", String::from_utf8_lossy(&diff_bytes));
+            Ok(Some(String::from_utf8_lossy(&diff_bytes).to_string()))
         }
+    }
+
+    pub fn pop_stash(&mut self) -> Result<()> {
+        let Some(diff) = self.stash_diff.take() else {
+            return Ok(());
+        };
+
+        let diff = git2::Diff::from_buffer(diff.as_bytes()).into_diagnostic()?;
+        let mut apply_opts = git2::ApplyOptions::new();
+        self.repo
+            .apply(&diff, git2::ApplyLocation::Both, Some(&mut apply_opts))
+            .into_diagnostic()
+            .wrap_err("failed to apply diff")?;
+
+        Ok(())
     }
 
     pub fn add(&mut self, pathspecs: &[&str]) -> Result<()> {
@@ -197,21 +216,6 @@ impl Git {
             .write()
             .into_diagnostic()
             .wrap_err("failed to write index")?;
-        Ok(())
-    }
-
-    pub fn pop_stash(&mut self) -> Result<()> {
-        let Some(diff) = self.stash_diff.take() else {
-            return Ok(());
-        };
-
-        let diff = git2::Diff::from_buffer(&diff).into_diagnostic()?;
-        let mut apply_opts = git2::ApplyOptions::new();
-        self.repo
-            .apply(&diff, git2::ApplyLocation::WorkDir, Some(&mut apply_opts))
-            .into_diagnostic()
-            .wrap_err("failed to apply diff")?;
-
         Ok(())
     }
 }
