@@ -137,12 +137,15 @@ impl Git {
                 return Ok(());
             }
         }
+
         self.stash_diff = self.build_diff()?;
         if self.stash_diff.is_none() {
             return Ok(());
         }
+
         debug!("removing unstaged files");
         let mut checkout_opts = git2::build::CheckoutBuilder::new();
+        checkout_opts.remove_untracked(true);
         self.repo
             .checkout_head(Some(&mut checkout_opts))
             .into_diagnostic()
