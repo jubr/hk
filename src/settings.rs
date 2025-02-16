@@ -1,8 +1,9 @@
 use std::{
     num::NonZero,
     sync::{LazyLock, Mutex},
-    thread,
 };
+
+use crate::env;
 
 #[derive(Debug)]
 pub struct Settings {
@@ -26,9 +27,8 @@ impl Settings {
 
 impl Default for Settings {
     fn default() -> Self {
-        let jobs = NonZero::new(thread::available_parallelism().unwrap().get()).unwrap();
         Self {
-            jobs: Mutex::new(jobs),
+            jobs: Mutex::new(*env::HK_JOBS),
         }
     }
 }

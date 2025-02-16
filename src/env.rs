@@ -1,5 +1,5 @@
 pub use std::env::*;
-use std::{path::PathBuf, sync::LazyLock};
+use std::{num::NonZero, path::PathBuf, sync::LazyLock, thread};
 
 // pub static HK_BIN: LazyLock<PathBuf> =
 //     LazyLock::new(|| current_exe().unwrap().canonicalize().unwrap());
@@ -29,6 +29,13 @@ pub static HK_LOG_FILE: LazyLock<PathBuf> =
 
 pub static HK_AUTO_STASH: LazyLock<bool> = LazyLock::new(|| !var_false("HK_AUTO_STASH"));
 pub static HK_FIX: LazyLock<bool> = LazyLock::new(|| !var_false("HK_FIX"));
+pub static HK_JOBS: LazyLock<NonZero<usize>> = LazyLock::new(|| {
+    var("HK_JOBS")
+        .ok()
+        .and_then(|val| val.parse().ok())
+        .or(thread::available_parallelism().ok())
+        .unwrap_or(NonZero::new(4).unwrap())
+});
 
 fn var_path(name: &str) -> Option<PathBuf> {
     var(name).map(PathBuf::from).ok()

@@ -8,13 +8,14 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Getting Started', link: '/getting_started' },
-      { text: 'About', link: '/about' },
+      { text: 'Configuration', link: '/configuration' },
       { text: 'GitHub', link: 'https://github.com/jdx/hk' },
       { text: 'Discord', link: 'https://discord.gg/UBa7pJUN7Z' },
     ],
 
     sidebar: [
       { text: 'Getting Started', link: '/getting_started' },
+      { text: 'Configuration', link: '/configuration' },
       { text: 'Environment Variables', link: '/environment_variables' },
       { text: 'About', link: '/about' },
     ],
