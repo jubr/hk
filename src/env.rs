@@ -27,9 +27,7 @@ pub static HK_LOG_FILE_LEVEL: LazyLock<log::LevelFilter> =
 pub static HK_LOG_FILE: LazyLock<PathBuf> =
     LazyLock::new(|| var_path("HK_LOG_FILE").unwrap_or(HK_STATE_DIR.join("hk.log")));
 
-pub static HK_AUTO_STASH: LazyLock<bool> = LazyLock::new(|| {
-    var_true("HK_AUTO_STASH")
-});
+pub static HK_AUTO_STASH: LazyLock<bool> = LazyLock::new(|| var_true("HK_AUTO_STASH"));
 
 fn var_path(name: &str) -> Option<PathBuf> {
     var(name).map(PathBuf::from).ok()

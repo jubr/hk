@@ -81,12 +81,6 @@ impl StepScheduler {
     pub async fn run(self) -> Result<()> {
         let runner = Arc::new(self);
         let mut set = JoinSet::new();
-        let join_next = async |set: &mut JoinSet<Result<()>>| match set.join_next_with_id().await {
-            Some(Ok((id, Ok(_)))) => Some(Ok(id)),
-            Some(Ok((_id, Err(e)))) => Some(Err(e)),
-            Some(Err(e)) => Some(Err(e).into_diagnostic()),
-            None => None,
-        };
         let ctx = Arc::new(StepContext {
             all_files: runner.all_files,
             staged_files: runner.staged_files.clone(),
@@ -98,13 +92,18 @@ impl StepScheduler {
         }
 
         // Wait for tasks and abort on first error
-        while let Some(result) = join_next(&mut set).await {
+        while let Some(result) = set.join_next().await {
             match result {
-                Ok(_) => continue, // Step completed successfully
-                Err(e) => {
+                Ok(Ok(_)) => continue, // Step completed successfully
+                Ok(Err(e)) => {
                     // Task failed to execute
                     set.abort_all();
                     return Err(e);
+                }
+                Err(e) => {
+                    // JoinError occurred
+                    set.abort_all();
+                    return Err(e).into_diagnostic();
                 }
             }
         }

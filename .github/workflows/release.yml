@@ -1,4 +1,4 @@
-name: Release
+name: release
 
 permissions:
   contents: write
@@ -52,3 +52,4 @@ jobs:
           bin: hk
           target: ${{ matrix.target }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          features: git2/vendored-libgit2,git2/vendored-openssl
