@@ -10,10 +10,8 @@ pub struct PrePush {
     #[clap(short, long)]
     all: bool,
     /// Remote name
-    #[clap(short, long)]
     remote: String,
     /// Remote URL
-    #[clap(short, long)]
     url: String,
 }
 
