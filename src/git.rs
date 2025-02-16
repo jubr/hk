@@ -162,6 +162,8 @@ impl Git {
         // essentially: git diff-index --ignore-submodules --binary --exit-code --no-color --no-ext-diff (git write-tree)
         let mut opts = git2::DiffOptions::new();
         opts.include_untracked(true);
+        opts.show_binary(true);
+        opts.show_untracked_content(true);
         let diff = self
             .repo
             .diff_index_to_workdir(None, Some(&mut opts))
@@ -169,6 +171,10 @@ impl Git {
             .wrap_err("failed to get diff")?;
         let mut diff_bytes = vec![];
         diff.print(git2::DiffFormat::Patch, |_delta, _hunk, line| {
+            match line.origin() {
+                '+' | '-' | ' ' => diff_bytes.push(line.origin() as u8),
+                _ => {}
+            };
             diff_bytes.extend(line.content());
             true
         })
@@ -180,6 +186,7 @@ impl Git {
             println!("{}", String::from_utf8_lossy(&diff_bytes));
             Ok(Some(String::from_utf8_lossy(&diff_bytes).to_string()))
         }
+        // xx
     }
 
     pub fn pop_stash(&mut self) -> Result<()> {
@@ -197,7 +204,7 @@ impl Git {
             true
         });
         self.repo
-            .apply(&diff, git2::ApplyLocation::Both, Some(&mut apply_opts))
+            .apply(&diff, git2::ApplyLocation::WorkDir, Some(&mut apply_opts))
             .into_diagnostic()
             .wrap_err("failed to apply diff")?;
 
