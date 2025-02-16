@@ -1,6 +1,6 @@
-use std::{cell::RefCell, path::PathBuf, thread, time::Duration};
+use std::path::PathBuf;
 
-use git2::{Commit, Repository, StashFlags, StatusOptions, StatusShow, Tree};
+use git2::{Commit, Repository, StatusOptions, StatusShow, Tree};
 use itertools::Itertools;
 use miette::Result;
 use miette::{miette, Context, IntoDiagnostic};
