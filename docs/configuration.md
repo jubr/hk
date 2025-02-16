@@ -34,9 +34,7 @@ the builtins, so it's only necessary if actually using builtins.
 The minimum version of hk that is required to run hk. hk will fail to start if its version is below the specified version.
 
 ```pkl
-`pre-commit` {
-    min_hk_version = "0.1.0"
-}
+min_hk_version = "0.1.0"
 ```
 
 ### `<HOOK>`
