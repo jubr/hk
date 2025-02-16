@@ -1,6 +1,6 @@
 {
-    "files.exclude": {
-        "node_modules": true,
-        "target": true
-    }
+  "files.exclude": {
+    "node_modules": true,
+    "target": true
+  }
 }
