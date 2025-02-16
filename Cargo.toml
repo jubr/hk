@@ -35,3 +35,7 @@ xx = { version = "2", features = ["http", "hash", "rustls"] }
 strum = { version = "0.26", features = ["derive"] }
 clx = "0.1.0"
 semver = "1.0.25"
+
+[profile.serious]
+inherits = "release"
+lto = true
