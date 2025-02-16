@@ -1,6 +1,6 @@
 [package]
 name = "hk"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "A tool for managing git hooks"
 license = "MIT"
@@ -37,4 +37,4 @@ clx = "0.1.0"
 semver = "1.0.25"
 
 [features]
-default = ["git2/vendored-libgit2"]
+default = ["git2/vendored-libgit2", "git2/vendored-openssl"]
