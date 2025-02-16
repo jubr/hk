@@ -86,7 +86,7 @@ impl Step {
             } else {
                 RunType::Fix
             }
-        } else if self.run_all.is_none() || (ctx.all_files && self.run_all.is_some()) {
+        } else if self.run.is_none() || (ctx.all_files && self.run_all.is_some()) {
             RunType::RunAll
         } else {
             RunType::Run
