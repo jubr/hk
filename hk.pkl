@@ -19,7 +19,6 @@ pre_commit {
     // predefined formatters+linters
     // ["cargo-check"] = new builtins.CargoCheck {} // TODO: figure out why this causes recompiles
     ["cargo-fmt"] = new builtins.CargoFmt {}
-    ["json"] = new builtins.Jq {}
     // ["dbg"] {
     //     // ensure no dbg! macros are used
     //     glob = new { "**/*.rs" }
