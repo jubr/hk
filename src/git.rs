@@ -128,18 +128,26 @@ impl Git {
         // TODO: if any intent_to_add files exist, run `git rm --cached -- <file>...` then `git add --intent-to-add -- <file>...` when unstashing
         // let intent_to_add = self.intent_to_add_files()?;
         // see https://github.com/pre-commit/pre-commit/blob/main/pre_commit/staged_files_only.py
-        if !self.unstaged_files()?.is_empty() {
-            if let Ok(msg) = self.head_commit_message() {
-                if msg.contains("Merge") {
-                    return Ok(());
-                }
-            }
-            let diff = self.build_diff()?;
-            if diff.is_empty() {
+        if self.unstaged_files()?.is_empty() {
+            return Ok(());
+        }
+
+        if let Ok(msg) = self.head_commit_message() {
+            if msg.contains("Merge") {
                 return Ok(());
             }
-            self.stash_diff = diff;
         }
+        self.stash_diff = self.build_diff()?;
+        if self.stash_diff.is_none() {
+            return Ok(());
+        }
+
+        let mut checkout_opts = git2::build::CheckoutBuilder::new();
+        self.repo
+            .checkout_head(Some(&mut checkout_opts))
+            .into_diagnostic()
+            .wrap_err("failed to checkout head")?;
+
         Ok(())
     }
 
