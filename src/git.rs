@@ -137,19 +137,18 @@ impl Git {
                 return Ok(());
             }
         }
-
         self.stash_diff = self.build_diff()?;
         if self.stash_diff.is_none() {
             return Ok(());
         }
 
         debug!("removing unstaged files");
-        let mut checkout_opts = git2::build::CheckoutBuilder::new();
-        checkout_opts.remove_untracked(true);
+
         self.repo
-            .checkout_head(Some(&mut checkout_opts))
+            .checkout_index(None, None)
             .into_diagnostic()
-            .wrap_err("failed to checkout head")?;
+            .wrap_err("failed to reset to head")?;
+        std::process::exit(0);
 
         Ok(())
     }
@@ -215,10 +214,4 @@ impl Git {
 
         Ok(())
     }
-
-    // pub fn reset_index(&mut self) -> Result<()> {
-    //     let head = self.repo.head()?;
-    //     let tree = head.peel_to_tree()?;
-    //         .reset(&tree.into_object(), git2::ResetType::Mixed, None
-    // }
 }
