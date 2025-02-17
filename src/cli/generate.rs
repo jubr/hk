@@ -1,11 +1,17 @@
 use std::path::PathBuf;
 
-use crate::{version, Result};
+use crate::{env, version, Result};
 
 /// Generates a new hk.pkl file for a project
 #[derive(Debug, clap::Args)]
 #[clap(visible_alias = "g")]
-pub struct Generate {}
+pub struct Generate {
+    /// Generate a mise.toml file with hk configured
+    ///
+    /// Set HK_MISE=1 to make this default behavior.
+    #[clap(long, verbatim_doc_comment)]
+    mise: bool,
+}
 
 impl Generate {
     pub async fn run(&self) -> Result<()> {
@@ -65,6 +71,13 @@ min_hk_version = "{version}"
 "#
         );
         xx::file::write(hk_file, hook_content.trim_start())?;
+
+        if *env::HK_MISE || self.mise {
+            let mise_toml = PathBuf::from("mise.toml");
+            let mise_content = "[tools]\nhk = \"latest\"\n";
+            xx::file::write(mise_toml, mise_content)?;
+            println!("Generated mise.toml");
+        }
         Ok(())
     }
 }

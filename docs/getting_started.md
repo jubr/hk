@@ -14,6 +14,15 @@ mise use hk
 hk --version
 ```
 
+:::tip
+mise-en-place works well with hk. You can define all the tools that hk
+will use in `mise.toml` as well as hk itself which means other developers
+just need to run `hk install --mise` which will execute the hooks under `mise x|exec`.
+
+Will this method, they do not need to activate mise-en-place in order to use
+hk and the tools defined in `mise.toml`.
+:::
+
 Or install from source with `cargo`:
 
 ```

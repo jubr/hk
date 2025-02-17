@@ -29,6 +29,7 @@ pub static HK_LOG_FILE: LazyLock<PathBuf> =
 
 pub static HK_AUTO_STASH: LazyLock<bool> = LazyLock::new(|| !var_false("HK_AUTO_STASH"));
 pub static HK_FIX: LazyLock<bool> = LazyLock::new(|| !var_false("HK_FIX"));
+pub static HK_MISE: LazyLock<bool> = LazyLock::new(|| var_true("HK_MISE"));
 pub static HK_JOBS: LazyLock<NonZero<usize>> = LazyLock::new(|| {
     var("HK_JOBS")
         .ok()
@@ -45,12 +46,12 @@ fn var_log_level(name: &str) -> Option<log::LevelFilter> {
     var(name).ok().and_then(|level| level.parse().ok())
 }
 
-// fn var_true(name: &str) -> bool {
-//     var(name)
-//         .map(|val| val.to_lowercase())
-//         .map(|val| val == "true" || val == "1")
-//         .unwrap_or(false)
-// }
+fn var_true(name: &str) -> bool {
+    var(name)
+        .map(|val| val.to_lowercase())
+        .map(|val| val == "true" || val == "1")
+        .unwrap_or(false)
+}
 
 fn var_false(name: &str) -> bool {
     var(name)

@@ -1,11 +1,19 @@
 use std::path::PathBuf;
 
-use crate::{config::Config, Result};
+use crate::{config::Config, env, Result};
 
 /// Sets up git hooks to run hk
 #[derive(Debug, clap::Args)]
 #[clap(visible_alias = "i")]
-pub struct Install {}
+pub struct Install {
+    /// Use `mise x` to execute hooks. With this, it won't
+    /// be necessary to activate mise in order to run hooks
+    /// with mise tools.
+    ///
+    /// Set HK_MISE=1 to make this default behavior.
+    #[clap(long, verbatim_doc_comment)]
+    mise: bool,
+}
 
 impl Install {
     pub async fn run(&self) -> Result<()> {
@@ -13,9 +21,14 @@ impl Install {
         let hooks = PathBuf::from(".git/hooks");
         let add_hook = |hook: &str| {
             let hook_file = hooks.join(hook);
+            let command = if *env::HK_MISE || self.mise {
+                format!("mise x -- hk run {hook}")
+            } else {
+                format!("hk run {hook}")
+            };
             let hook_content = format!(
                 r#"#!/bin/sh
-hk run {hook} "$@"
+{command} "$@"
 "#
             );
             xx::file::write(&hook_file, &hook_content)?;
