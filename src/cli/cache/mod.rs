@@ -4,6 +4,7 @@ mod clear;
 
 /// Manage hk internal cache
 #[derive(Debug, clap::Args)]
+#[clap(hide = true)] // TODO: unhide if we actually use cache (which we probably will)
 pub struct Cache {
     #[clap(subcommand)]
     command: Commands,
