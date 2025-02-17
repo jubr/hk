@@ -14,6 +14,12 @@ mise use hk
 hk --version
 ```
 
+Or install from source with `cargo`:
+
+```
+cargo install hk
+```
+
 ## Project Setup
 
 Use `hk generate` to generate a `hk.pkl` file:
