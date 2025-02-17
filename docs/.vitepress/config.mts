@@ -18,15 +18,18 @@ const commands = getCommands(spec.cmd);
 export default defineConfig({
   title: "hk",
   description: "git hook manager",
+  lang: "en-US",
+  lastUpdated: true,
+  appearance: "dark",
+  sitemap: {
+    hostname: "https://hk.jdx.dev",
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Getting Started', link: '/getting_started' },
       { text: 'Configuration', link: '/configuration' },
-      { text: 'GitHub', link: 'https://github.com/jdx/hk' },
-      { text: 'Discord', link: 'https://discord.gg/UBa7pJUN7Z' },
     ],
-
     sidebar: [
       { text: 'Getting Started', link: '/getting_started' },
       { text: 'Configuration', link: '/configuration' },
@@ -34,13 +37,45 @@ export default defineConfig({
       { text: 'About', link: '/about' },
       { text: 'CLI Reference', link: '/cli', items: commands.map(cmd => ({ text: cmd.join(' '), link: `/cli/${cmd.join('/')}` })) },
     ],
-
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/jdx/hk' },
+      { icon: 'discord', link: 'https://discord.gg/UBa7pJUN7Z' },
     ],
-
+    editLink: {
+      pattern: "https://github.com/jdx/hk/edit/main/docs/:path",
+    },
     search: {
       provider: 'local',
     },
+    footer: {
+      message:
+        'Licensed under the MIT License. Maintained by <a href="https://github.com/jdx">@jdx</a> and <a href="https://github.com/jdx/hk/graphs/contributors">friends</a>.',
+      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://github.com/jdx">@jdx</a>`,
+    },
+    head: [
+      [
+        "script",
+        {
+          async: "",
+          src: "https://www.googletagmanager.com/gtag/js?id=G-B69G389C8T",
+        },
+      ],
+      [
+        "script",
+        {},
+        `window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-B69G389C8T');`,
+      ],
+      [
+        "script",
+        {
+          "data-goatcounter": "https://jdx.goatcounter.com/count",
+          async: "",
+          src: "//gc.zgo.at/count.js",
+        },
+      ],
+    ],
   }
 })
