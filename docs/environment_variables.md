@@ -2,12 +2,6 @@
 
 Environment variables can be used to configure hk.
 
-## `HK_STASH`
-
-Default: `true`
-
-If set to `false`, hk will not automatically stash unstaged changes before running hooks.
-
 ## `HK_CACHE_DIR`
 
 Default: `~/.cache/hk`
@@ -51,6 +45,19 @@ Default: `false`
 If set to `true`:
 - When installing hooks with `hk install`, hk will use `mise x` to execute hooks which won't require activating mise to use mise tools
 - When generating files with `hk generate`, hk will create a `mise.toml` file with hk configured
+
+## `HK_SKIP_STEPS`
+
+Default: (empty)
+
+A comma-separated list of step names to skip when running pre-commit and pre-push hooks.
+For example: `HK_SKIP_STEPS=lint,test` would skip any steps named "lint" or "test".
+
+## `HK_STASH`
+
+Default: `true`
+
+If set to `false`, hk will not automatically stash unstaged changes before running hooks.
 
 ## `HK_STATE_DIR`
 

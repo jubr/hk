@@ -1,6 +1,8 @@
 pub use std::env::*;
 use std::{num::NonZero, path::PathBuf, sync::LazyLock, thread};
 
+use indexmap::IndexSet;
+
 // pub static HK_BIN: LazyLock<PathBuf> =
 //     LazyLock::new(|| current_exe().unwrap().canonicalize().unwrap());
 // pub static CWD: LazyLock<PathBuf> = LazyLock::new(|| current_dir().unwrap_or_default());
@@ -30,6 +32,8 @@ pub static HK_LOG_FILE: LazyLock<PathBuf> =
 pub static HK_STASH: LazyLock<bool> = LazyLock::new(|| !var_false("HK_STASH"));
 pub static HK_FIX: LazyLock<bool> = LazyLock::new(|| !var_false("HK_FIX"));
 pub static HK_MISE: LazyLock<bool> = LazyLock::new(|| var_true("HK_MISE"));
+pub static HK_SKIP_STEPS: LazyLock<IndexSet<String>> =
+    LazyLock::new(|| var_csv("HK_SKIP_STEPS").unwrap_or_default());
 pub static HK_JOBS: LazyLock<NonZero<usize>> = LazyLock::new(|| {
     var("HK_JOBS")
         .ok()
@@ -40,6 +44,12 @@ pub static HK_JOBS: LazyLock<NonZero<usize>> = LazyLock::new(|| {
 
 fn var_path(name: &str) -> Option<PathBuf> {
     var(name).map(PathBuf::from).ok()
+}
+
+fn var_csv(name: &str) -> Option<IndexSet<String>> {
+    var(name)
+        .map(|val| val.split(',').map(|s| s.trim().to_string()).collect())
+        .ok()
 }
 
 fn var_log_level(name: &str) -> Option<log::LevelFilter> {

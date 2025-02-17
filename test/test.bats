@@ -184,3 +184,23 @@ EOF
     assert_failure
     assert_output --partial "SC2086"
 }
+
+@test "HK_SKIP_STEPS skips specified steps" {
+    cat <<EOF > hk.pkl
+amends "$PKL_PATH/hk.pkl"
+import "$PKL_PATH/builtins.pkl"
+
+\`pre-commit\` {
+    ["prettier"] = new builtins.Prettier {}
+    ["shellcheck"] = new builtins.Shellcheck {}
+}
+EOF
+    touch test.sh
+    touch test.js
+    git add test.sh test.js
+    export HK_SKIP_STEPS="shellcheck"
+    run hk run pre-commit -v
+    assert_success
+    assert_output --partial "prettier"
+    assert_output --partial "shellcheck: skipping step due to HK_SKIP_STEPS"
+}

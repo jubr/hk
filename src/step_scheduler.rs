@@ -59,7 +59,12 @@ impl StepScheduler {
         };
         let failed = self.failed.clone();
         if *failed.lock().await {
-            trace!("{}: skipping step due to previous failure", step);
+            trace!("{step}: skipping step due to previous failure");
+            return Ok(());
+        }
+        // Check if step should be skipped based on HK_SKIP_STEPS
+        if crate::env::HK_SKIP_STEPS.contains(&step.name) {
+            warn!("{step}: skipping step due to HK_SKIP_STEPS");
             return Ok(());
         }
         debug!("spawning step: {:?}", step.name);
