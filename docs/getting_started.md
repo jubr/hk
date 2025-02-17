@@ -42,15 +42,15 @@ import "https://hk.jdx.dev/v0/builtins.pkl"
         // the files to run the hook on, if no files are matched, the hook will be skipped
         // this will filter the staged files and return the subset matching these globs
         glob = new { "*.js"; "*.ts" }
-        // the command to run the hook on the files that makes no changes
+        // a command that returns non-zero to fail the step
         run = "eslint {{files}}"
-        // the command to run the hook on the files that fixes them (used by default)
-        fix = "eslint --fix {{files}}"
     }
     // hooks can also be specified with the builtins pkl library
     ["prettier"] = new builtins.Prettier {}
 }
 ```
+
+See [configuration](/configuration) for more information on the `hk.pkl` file.
 
 ## Usage
 
