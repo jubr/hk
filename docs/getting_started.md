@@ -15,12 +15,9 @@ hk --version
 ```
 
 :::tip
-mise-en-place works well with hk. You can define all the tools that hk
-will use in `mise.toml` as well as hk itself which means other developers
-just need to run `hk install --mise` which will execute the hooks under `mise x|exec`.
+mise-en-place integrates well with hk. Features common in similar git-hook managers like dependency management, task dependencies, and env vars can be provided by mise.
 
-Will this method, they do not need to activate mise-en-place in order to use
-hk and the tools defined in `mise.toml`.
+See [mise integration](/mise_integration) for more information.
 :::
 
 Or install from source with `cargo`:

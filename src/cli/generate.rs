@@ -74,9 +74,18 @@ min_hk_version = "{version}"
 
         if *env::HK_MISE || self.mise {
             let mise_toml = PathBuf::from("mise.toml");
-            let mise_content = "[tools]\nhk = \"latest\"\n";
-            xx::file::write(mise_toml, mise_content)?;
-            println!("Generated mise.toml");
+            let mise_content = r#"[tools]
+hk = "latest"
+
+[tasks]
+pre-commit = "hk run pre-commit"
+"#;
+            if mise_toml.exists() {
+                warn!("mise.toml already exists");
+            } else {
+                xx::file::write(mise_toml, mise_content)?;
+                println!("Generated mise.toml");
+            }
         }
         Ok(())
     }

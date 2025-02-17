@@ -8,7 +8,6 @@ _.path = [
 black = "latest"
 hadolint = "latest"
 ktlint = "latest"
-markdownlint-cli2 = "latest"
 "npm:prettier" = "latest"
 "npm:stylelint" = "latest"
 pkl = "latest"
