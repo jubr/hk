@@ -2,7 +2,7 @@
 
 Environment variables can be used to configure hk.
 
-## `HK_AUTO_STASH`
+## `HK_STASH`
 
 Default: `true`
 

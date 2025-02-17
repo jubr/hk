@@ -16,7 +16,7 @@ pub struct PreCommit {
     /// Run run command instead of fix command
     #[clap(short, long)]
     run: bool,
-    /// Force stashing even if it's disabled via HK_AUTO_STASH
+    /// Force stashing even if it's disabled via HK_STASH
     #[clap(long)]
     stash: bool,
 }

@@ -121,7 +121,7 @@ impl Git {
 
     pub fn stash_unstaged(&mut self, force: bool) -> Result<()> {
         // Skip stashing if there's no initial commit yet or auto-stash is disabled
-        if (!force && !*env::HK_AUTO_STASH) || self.repo.head().is_err() {
+        if (!force && !*env::HK_STASH) || self.repo.head().is_err() {
             return Ok(());
         }
 
