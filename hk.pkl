@@ -12,6 +12,7 @@ min_hk_version = "0.1.0"
         run = "mise run prelint"
         exclusive = true // ensures that the step runs in isolation
     }
+    ["actionlint"] = new builtins.Actionlint {}
     ["pkl"] {
         glob = new { "*.pkl" }
         run = "pkl eval {{files}} >/dev/null"

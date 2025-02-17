@@ -1,5 +1,11 @@
 import "hk.pkl"
 
+class Actionlint extends hk.Step {
+    glob = new { ".github/workflows/*.{yml,yaml}" }
+    run = "actionlint {{ files }}"
+    run_all = "actionlint ."
+}
+
 class CargoCheck extends hk.Step {
     glob = new { "**/*.rs" }
     run = "cargo check --all-features"
