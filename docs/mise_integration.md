@@ -28,6 +28,9 @@ mise use jq
 mise use npm:prettier
 ```
 
+:::tip Please note that hk is included since mise v2025.2.6), so you might have to `brew upgrade mise` or equivalent to have it available.
+Real EagerBeavers™ could decide to `mise self-update` to get in on the action early, before their distro's package manager releases a new version. :::
+
 This will create a `mise.toml` file that can be committed into the project. See the [mise dev tool docs](https://mise.jdx.dev/dev-tools/) for more information.
 
 ## Task Management
