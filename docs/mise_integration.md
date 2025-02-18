@@ -19,14 +19,19 @@ with developers who don't typically use mise but want hooks on a particular proj
 
 ## Tool Management
 
-mise's tool management feature lets you define the version of all of the tools used in `hk.pkl` in a single place. To use, run `mise use` on
+mise's tool management feature lets you define the version of all of the tools used in `hk.pkl` in a single place. To install these, run `mise use` on
 all the tools you wish to use:
 
-```sh
+```
 mise use hk
 mise use jq
 mise use npm:prettier
 ```
+
+:::tip
+Please note that hk is included since mise [v2025.2.6](https://github.com/jdx/mise/releases/tag/v2025.2.6)), so you might have to `brew upgrade mise` or equivalent to have it available.
+Real EagerBeavers™ could decide to `mise self-update` to get in on the action early, before their distro's package manager releases a new version.
+:::
 
 This will create a `mise.toml` file that can be committed into the project. See the [mise dev tool docs](https://mise.jdx.dev/dev-tools/) for more information.
 
